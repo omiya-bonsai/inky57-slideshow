@@ -1,6 +1,7 @@
-# Inky Impression 高機能スライドショー
+# Inky Impression 5.7" 高機能スライドショー
 
-Raspberry Piに接続されたPimoroni社の電子ペーパーディスプレイ「Inky Impression」を、インテリジェントなデジタルフォトフレームとして機能させるためのPythonスクリプトです。
+Raspberry Piに接続されたPimoroni社の電子ペーパーディスプレイ「Inky Impression 5.7" (7 colour ePaper/eInk HAT)
+」を、インテリジェントなデジタルフォトフレームとして機能させるためのPythonスクリプトです。
 
 ## 🌟 主要機能
 
