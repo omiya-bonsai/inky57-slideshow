@@ -1,6 +1,8 @@
 # Inky Impression 高機能スライドショー
 
 Raspberry Piに接続されたPimoroni社の電子ペーパーディスプレイ「Inky Impression 5.7" (7 colour ePaper/eInk HAT)」を、インテリジェントなデジタルフォトフレームとして機能させるためのPythonスクリプトです。
+![IMG_7545](https://github.com/user-attachments/assets/7348fa47-84c7-448c-b1f4-f414277812cc)
+
 
 ## 🌟 主要機能
 
