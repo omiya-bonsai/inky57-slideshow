@@ -33,7 +33,7 @@ Raspberry Piに接続されたPimoroni社の電子ペーパーディスプレイ
 
 ### 1. リポジトリのクローン
 ```bash
-git clone https://github.com/yourusername/inky-slideshow.git
+git clone https://github.com/omiya-bonsai/inky57-slideshow.git
 cd inky-slideshow
 ```
 
