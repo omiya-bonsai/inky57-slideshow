@@ -24,7 +24,7 @@ Raspberry Piに接続されたPimoroni社の電子ペーパーディスプレイ
 
 ### ハードウェア
 - Raspberry Pi（3B+以降推奨）
-- Pimoroni Inky Impression（7色電子ペーパーディスプレイ）
+- Pimoroni Inky Impression 5.7"（7色電子ペーパーディスプレイ）
 
 ### ソフトウェア
 - Python 3.7以降
@@ -100,8 +100,8 @@ After=network.target
 [Service]
 Type=simple
 User=pi
-WorkingDirectory=/home/pi/inky-slideshow
-ExecStart=/usr/bin/python3 /home/pi/inky-slideshow/slideshow.py
+WorkingDirectory=/home/pi/inky57-slideshow
+ExecStart=/usr/bin/python3 /home/pi/inky57-slideshow/slideshow.py
 Restart=always
 RestartSec=10
 
@@ -112,7 +112,7 @@ WantedBy=multi-user.target
 ## 📁 ファイル構造
 
 ```
-inky-slideshow/
+inky57-slideshow/
 ├── slideshow.py          # メインスクリプト
 ├── .env                  # 設定ファイル
 ├── .env.sample          # 設定ファイルのサンプル
