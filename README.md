@@ -23,7 +23,7 @@ Raspberry Piに接続されたPimoroni社の電子ペーパーディスプレイ
 
 ### ハードウェア
 - Raspberry Pi（3B+以降推奨）
-- **[Pimoroni Inky Impression 5.7"]**(https://shop.pimoroni.com/products/inky-impression-5-7?variant=32298701324371)（7色電子ペーパーディスプレイ）
+- **[Pimoroni Inky Impression 5.7"]**(https://shop.pimoroni.com/products/inky-impression-5-7?variant=32298701324371)
 
 ### ソフトウェア
 - Python 3.7以降
