@@ -1,102 +1,175 @@
-# Inky Display Slideshow
+# Inky Impression 高機能スライドショー
 
-**Raspberry Pi** と **Pimoroni Inky Impression 5.7インチ**電子ペーパーディスプレイを使用して、指定したフォルダ内の画像をスライドショー表示するPythonスクリプトです。
+Raspberry Piに接続されたPimoroni社の電子ペーパーディスプレイ「Inky Impression」を、インテリジェントなデジタルフォトフレームとして機能させるためのPythonスクリプトです。
 
-画像には、EXIF情報から取得した撮影日と、現在からの経過時間をオーバーレイ表示します。
+## 🌟 主要機能
 
-## 📜 概要と特徴
+### インテリジェントな表示システム
+- **スマートキュー管理**: 一度表示した画像は、すべての画像が表示されるまで再表示されません
+- **状態の永続化**: スクリプトの再起動後も前回の続きから表示を再開
+- **自動リセット機能**: 画像フォルダ内のファイル変更を検知し、表示キューを自動更新
 
-このスクリプトは、Inky Impressionディスプレイをインテリジェントなデジタルフォトフレームとして機能させます。
+### EXIF情報を活用した美しい表示
+- **撮影日の自動表示**: JPEG画像のEXIF情報から撮影日を抽出
+- **経過時間の計算**: 「3 years ago」のような分かりやすい経過時間を表示
+- **ランダム配置**: 日付情報を画面の四隅にランダム配置してマンネリを防止
 
-  * **インテリジェントな表示キュー**: 一度表示した画像は、すべての画像が表示されるまで再表示されません。これにより、短期間での画像の偏りを防ぎ、全ての思い出を均等に楽しめます。
-  * **状態の永続化**: 表示待ちの画像リストはJSONファイルに保存され、スクリプトを再起動しても前回の続きから再開できます。
-  * **画像フォルダの自動検知**: 起動時に画像フォルダ内のファイル数増減を検知し、自動で表示リストをリフレッシュします。
-  * **EXIFデータ活用**: JPEG画像のEXIF情報から撮影日時を読み取り、「撮影日」と「現在からの経過時間」を画像上にオーバーレイ表示します。
-  * **柔軟な外部設定**: 表示間隔や画像ディレクトリなどを`.env`ファイルで簡単に変更できます。
-  * **詳細なロギング**: 動作状況やエラーをコンソールとログファイルに出力し、問題解決を助けます。
+### 柔軟な設定システム
+- **外部設定ファイル**: `.env`ファイルで簡単に設定変更
+- **詳細な画像調整**: 彩度、コントラスト、フォントサイズなどの細かな調整が可能
+- **包括的なログ出力**: 動作状況とエラーの詳細な記録
 
------
-
-## ⚙️ 必要なもの
+## 📋 必要な環境
 
 ### ハードウェア
-
-  * **Raspberry Pi** （任意のモデル）
-  * **電子ペーパーディスプレイ**: [Pimoroni Inky Impression 5.7"](https://shop.pimoroni.com/products/inky-impression-5-7?variant=32298701324371)
+- Raspberry Pi（3B+以降推奨）
+- Pimoroni Inky Impression（7色電子ペーパーディスプレイ）
 
 ### ソフトウェア
+- Python 3.7以降
+- 必要なPythonパッケージ（requirements.txtを参照）
 
-  * Python 3
-  * 以下のPythonライブラリ
-      * `inky`
-      * `Pillow`
-      * `piexif`
-      * `python-dotenv`
+## 🚀 インストール
 
------
-
-## 🚀 セットアップ
-
-### 1\. ライブラリのインストール
-
-必要なライブラリをpipでインストールします。
-
-```sh
-pip install inky pillow piexif python-dotenv
+### 1. リポジトリのクローン
+```bash
+git clone https://github.com/yourusername/inky-slideshow.git
+cd inky-slideshow
 ```
 
-### 2\. ファイルの配置
-
-プロジェクトディレクトリを以下のような構造で配置します。
-
-```
-my-slideshow/
-├── slideshow.py    # このスクリプト
-├── images/           # 表示させたい画像を入れるフォルダ
-│   ├── photo1.jpg
-│   └── photo2.png
-├── .env              # 設定ファイル
-└── .env.sample       # 設定ファイルのサンプル
+### 2. 依存パッケージのインストール
+```bash
+pip install -r requirements.txt
 ```
 
-### 3\. 設定ファイルの作成
+### 3. 設定ファイルの作成
+```bash
+cp .env.sample .env
+```
 
-`.env.sample` をコピーして `.env` という名前のファイルを作成し、設定を記述します。
+### 4. 画像フォルダの準備
+```bash
+mkdir images
+# お気に入りの写真（.jpg, .jpeg, .png）をimagesフォルダに配置
+```
 
-**`.env` ファイルの例:**
+## ⚙️ 設定
 
-```ini
-# 表示する画像が入っているフォルダ名
+`.env`ファイルを編集して、お好みに合わせて設定を調整してください：
+
+```env
+# 画像が格納されているディレクトリ名
 PHOTO_DIR="images"
 
-# 画像を切り替える間隔（秒）
+# 画像切り替え間隔（秒）
+# 例：30分 = 1800秒
 INTERVAL_SECONDS=1800
 
-# （オプション）フォントファイルのフルパス
-# FONT_PATH="/path/to/your/font.ttf"
+# カスタムフォントのパス（オプション）
+# FONT_PATH="/path/to/your/custom-font.ttf"
 ```
 
-  * `PHOTO_DIR` には、`slideshow.py`からの相対的な画像フォルダのパスを指定します。
-  * `INTERVAL_SECONDS` はお好みの秒数に設定してください（例: 30分 = 1800秒）。
+### 詳細設定
 
------
+スクリプト内の`CONFIG`定数を編集することで、以下の項目も調整できます：
+- フォントサイズ
+- 彩度・コントラスト
+- 日付表示の余白
+- リトライ回数
 
-## ▶️ 実行方法
+## 🖼️ 使用方法
 
-以下のコマンドでスクリプトを実行します。`Ctrl+C`で終了するまで、設定した間隔で画像の表示を更新し続けます。
-
-```sh
+### 基本実行
+```bash
 python3 slideshow.py
 ```
 
-デーモン化してバックグラウンドで永続的に実行したい場合は、`tmux` や `systemd` を利用することをお勧めします。
+### バックグラウンド実行
+```bash
+nohup python3 slideshow.py &
+```
 
------
+### systemdサービスとして実行（推奨）
+サービスファイルの例：
+```ini
+[Unit]
+Description=Inky Impression Slideshow
+After=network.target
 
-## 🙏 謝辞 (Acknowledgements)
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/inky-slideshow
+ExecStart=/usr/bin/python3 /home/pi/inky-slideshow/slideshow.py
+Restart=always
+RestartSec=10
 
-このスクリプトの作成および関連作業において、GoogleのAIである **Gemini (2.5 Pro)** を以下の目的で活用しました。
+[Install]
+WantedBy=multi-user.target
+```
 
-  * コードのリファクタリングと機能改善の提案
-  * Gitの操作方法に関する質問とトラブルシューティング
-  * ドキュメント（README.md）の作成支援
+## 📁 ファイル構造
+
+```
+inky-slideshow/
+├── slideshow.py          # メインスクリプト
+├── .env                  # 設定ファイル
+├── .env.sample          # 設定ファイルのサンプル
+├── images/              # 画像フォルダ（デフォルト）
+├── requirements.txt     # Python依存パッケージ
+├── README.md           # このファイル
+└── LICENSE             # MITライセンス
+```
+
+### 自動生成されるファイル
+- `~/.cache/slideshow_state.json` - 表示状態の保存
+- `~/.logs/slideshow_logs/slideshow.log` - 動作ログ
+
+## 🔧 トラブルシューティング
+
+### よくある問題
+
+**Q: 画像が表示されない**
+A: 以下を確認してください：
+- 画像ファイルが`.jpg`, `.jpeg`, `.png`形式であること
+- `images`フォルダに画像が配置されていること
+- Inky Impressionが正しく接続されていること
+
+**Q: 日付が表示されない**
+A: PNG画像にはEXIF情報が含まれていないため、「Unknown date」と表示されます。これは正常な動作です。
+
+**Q: フォントが見つからないエラー**
+A: `.env`ファイルで`FONT_PATH`を正しいフォントファイルのパスに設定してください。
+
+### ログの確認
+```bash
+tail -f ~/.logs/slideshow_logs/slideshow.log
+```
+
+## 📸 対応画像形式
+
+- JPEG (.jpg, .jpeg) - EXIFデータから撮影日を取得
+- PNG (.png) - 撮影日は「Unknown date」として表示
+
+## 🤝 コントリビューション
+
+プルリクエスト、イシューの報告、機能提案など、どんな形でもコントリビューションを歓迎します！
+
+## 📄 ライセンス
+
+このプロジェクトは[MIT License](LICENSE)の下で公開されています。
+
+## 🙏 謝辞
+
+このプロジェクトの開発にあたり、以下のツールとサービスを活用させていただきました：
+
+- **[Pimoroni](https://pimoroni.com/)** - 素晴らしいInky Impressionディスプレイの提供
+- **[Raspberry Pi Foundation](https://www.raspberrypi.org/)** - 優れたシングルボードコンピュータの開発
+- **Google Gemini** - コード開発とデバッグにおけるAIアシスタンス
+- **Anthropic Claude** - ドキュメント作成とコード改善におけるAIサポート
+
+また、オープンソースコミュニティの皆様、特にPIL（Pillow）、piexif、python-dotenvなどのライブラリ開発者の皆様に深く感謝いたします。
+
+---
+
+**Made with ❤️ for preserving memories**
