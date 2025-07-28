@@ -1,5 +1,3 @@
------
-
 # Inky Display Slideshow
 
 **Raspberry Pi** と **Pimoroni Inky Impression 5.7インチ**電子ペーパーディスプレイを使用して、指定したフォルダ内の画像をスライドショー表示するPythonスクリプトです。
@@ -89,3 +87,13 @@ python3 slideshow.py
 ```
 
 デーモン化してバックグラウンドで永続的に実行したい場合は、`tmux` や `systemd` を利用することをお勧めします。
+
+-----
+
+## 🙏 謝辞 (Acknowledgements)
+
+このスクリプトの作成および関連作業において、GoogleのAIである **Gemini (2.5 Pro)** を以下の目的で活用しました。
+
+  * コードのリファクタリングと匿名化
+  * Gitの操作方法に関する質問とトラブルシューティング
+  * ドキュメント（README.md）の作成支援
