@@ -2,12 +2,10 @@
 """
 Inky Impression 5.7" 7色版 スライドショー
 
-分類:
-  images/photo/ 配下 → 写真用: Floyd-Steinberg ディザリング
-  images/art/   配下 → イラスト用: ディザリングなし
-
-想定:
-  Inky Impression 5.7" / 600x448 / 7色
+重要:
+- Pillow側での強制7色減色はしない
+- Inkyライブラリ側の色変換に任せる
+- images/photo/ と images/art/ を再帰的に読む
 """
 
 import os
@@ -49,9 +47,6 @@ CONFIG = {
     "SATURATION": 0.85,
     "PHOTO_CONTRAST": 1.15,
     "ART_CONTRAST": 1.04,
-
-    # 旧 Inky Impression 5.7" は 7色前提
-    "OUTPUT_COLORS": 7,
 }
 
 
@@ -89,6 +84,7 @@ def save_state(queue, total_count):
 
     try:
         os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+
         with open(STATE_FILE, "w") as f:
             json.dump(state, f)
 
@@ -121,8 +117,7 @@ def load_state():
 
 
 def detect_image_mode(image_path: str) -> str:
-    normalized = os.path.normpath(image_path).lower()
-    parts = normalized.split(os.sep)
+    parts = os.path.normpath(image_path).lower().split(os.sep)
 
     if "art" in parts:
         return "art"
@@ -183,6 +178,7 @@ def format_date_and_elapsed_time(capture_date):
         elapsed = f"{years} year{'s' if years > 1 else ''} ago"
     else:
         months = delta.days // 30
+
         if months > 0:
             elapsed = f"{months} month{'s' if months > 1 else ''} ago"
         else:
@@ -257,27 +253,6 @@ def add_date_overlay(img, capture_date):
     return img
 
 
-def apply_epaper_quantize(img: Image.Image, image_path: str) -> Image.Image:
-    image_mode = detect_image_mode(image_path)
-
-    if image_mode == "art":
-        dither = Image.Dither.NONE
-        logger.info(f"Quantize mode: art / no dither / {image_path}")
-    else:
-        dither = Image.Dither.FLOYDSTEINBERG
-        logger.info(f"Quantize mode: photo / Floyd-Steinberg / {image_path}")
-
-    rgb = img.convert("RGB")
-
-    paletted = rgb.quantize(
-        colors=CONFIG["OUTPUT_COLORS"],
-        method=Image.Quantize.MEDIANCUT,
-        dither=dither,
-    )
-
-    return paletted.convert("RGB")
-
-
 def prepare_image(image_path):
     try:
         image_mode = detect_image_mode(image_path)
@@ -329,9 +304,7 @@ def prepare_image(image_path):
             capture_date = extract_capture_date(image_path)
             with_date = add_date_overlay(cropped_img, capture_date)
 
-            final_img = apply_epaper_quantize(with_date, image_path)
-
-            return final_img
+            return with_date.convert("RGB")
 
     except Exception as e:
         logger.error(f"画像処理エラー [{os.path.basename(image_path)}]: {str(e)[:200]}")
